@@ -68,12 +68,12 @@ RUN set -u; \
             fi; \
         fi; \
     else \
-        echo "Using default Debian mirrors"; \
+        echo "Using archive Debian mirrors (Bullseye EOL)"; \
         write_debian_sources \
-            "https://deb.debian.org/debian" \
-            "https://deb.debian.org/debian-security"; \
+            "http://archive.debian.org/debian" \
+            "http://archive.debian.org/debian-security"; \
         if ! retry_system_dependencies; then \
-            echo "Failed to install system dependencies from the default Debian mirror" >&2; \
+            echo "Failed to install system dependencies from the archive Debian mirror" >&2; \
             exit 1; \
         fi; \
     fi; \
