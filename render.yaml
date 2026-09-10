@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mpt-engine
+    runtime: docker
+    plan: free
+    healthCheckPath: /docs
+    dockerfilePath: ./Dockerfile
+    dockerCommand: python main.py
+    buildArgs:
+      DOCKER_BUILD_MIRROR: default
+      PIP_USE_OFFICIAL: "1"
+    envVars:
+      - key: LISTEN_HOST
+        value: 0.0.0.0
+      - key: LISTEN_PORT
+        value: 8080
+      - key: PE_ENV
+        value: "true"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PEXELS_API_KEYS
+        sync: false
+      - key: MATERIAL_DIRECTORY
+        value: /tmp
