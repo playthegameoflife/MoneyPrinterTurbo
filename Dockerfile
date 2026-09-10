@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11-slim-bullseye
+FROM python:3.11-slim-bookworm
 
 # Set the working directory in the container
 WORKDIR /MoneyPrinterTurbo
@@ -21,10 +21,9 @@ ARG PIP_USE_OFFICIAL=1
 # 所有软件源统一使用 HTTPS，避免部分网络环境直接拦截明文 HTTP 请求。
 RUN set -u; \
     write_debian_sources() { \
-        main_url="$1"; \
-        security_url="$2"; \
-        printf 'deb %s bullseye main\ndeb %s bullseye-updates main\ndeb %s bullseye-security main\n' \
-            "$main_url" "$main_url" "$security_url" > /etc/apt/sources.list; \
+        main_url="$1"; codename="$2"; security_url="$3"; \
+        printf 'deb %s %s main\ndeb %s %s-updates main\ndeb %s %s-security main\n' \
+            "$main_url" "$codename" "$main_url" "$codename" "$security_url" "$codename" > /etc/apt/sources.list; \
         rm -rf /var/lib/apt/lists/*; \
     }; \
     install_system_dependencies() { \
@@ -50,16 +49,19 @@ RUN set -u; \
     if [ "$DOCKER_BUILD_MIRROR" = "china" ]; then \
         write_debian_sources \
             "https://mirrors.aliyun.com/debian" \
+            "bullseye" \
             "https://mirrors.aliyun.com/debian-security"; \
         if ! retry_system_dependencies; then \
             echo "Aliyun mirror failed, switching to Tsinghua mirror" >&2; \
             write_debian_sources \
                 "https://mirrors.tuna.tsinghua.edu.cn/debian" \
+                "bullseye" \
                 "https://mirrors.tuna.tsinghua.edu.cn/debian-security"; \
             if ! install_system_dependencies; then \
                 echo "Tsinghua mirror failed, switching to default Debian mirror" >&2; \
                 write_debian_sources \
                     "https://deb.debian.org/debian" \
+                    "bullseye" \
                     "https://deb.debian.org/debian-security"; \
                 if ! install_system_dependencies; then \
                     echo "Failed to install system dependencies from all configured mirrors" >&2; \
@@ -68,12 +70,13 @@ RUN set -u; \
             fi; \
         fi; \
     else \
-        echo "Using archive Debian mirrors (Bullseye EOL)"; \
+        echo "Using default Debian bookworm mirrors"; \
         write_debian_sources \
-            "http://archive.debian.org/debian" \
-            "http://archive.debian.org/debian-security"; \
+            "http://deb.debian.org/debian" \
+            "bookworm" \
+            "http://deb.debian.org/debian-security"; \
         if ! retry_system_dependencies; then \
-            echo "Failed to install system dependencies from the archive Debian mirror" >&2; \
+            echo "Failed to install system dependencies from the default Debian mirror" >&2; \
             exit 1; \
         fi; \
     fi; \
