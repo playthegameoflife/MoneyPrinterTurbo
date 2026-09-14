@@ -1,0 +1,28 @@
+# RunPod Serverless container for MoneyPrinterTurbo API
+# Exposes FastAPI on port 8080 (RunPod's expected port)
+FROM python:3.11-slim-bookworm
+
+WORKDIR /MoneyPrinterTurbo
+ENV PYTHONPATH=/MoneyPrinterTurbo
+ENV PYTHONUNBUFFERED=1
+
+# Install system deps: git + ffmpeg (required for video generation)
+RUN set -u; \
+    apt-get update && \
+    apt-get install -y --no-install-recommends git ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first (for Docker cache)
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --retries 3 --timeout 60 -r requirements.txt
+
+# Copy codebase
+COPY . .
+
+# Expose RunPod's expected port
+# Start FastAPI via the runpod startup script
+# (renames config, injects secrets, then starts uvicorn)
+COPY start-runpod.sh /start-runpod.sh
+RUN chmod +x /start-runpod.sh
+EXPOSE 8080
+CMD ["/start-runpod.sh"]

@@ -1,0 +1,133 @@
+# RunPod config — disables Redis queue, uses InMemoryTaskManager
+# Copy secrets from your main config.toml (api_key, pexels_api_keys, etc.)
+# DO NOT commit this file with real secrets — use environment variables in RunPod dashboard
+
+log_level = "WARNING"
+listen_host = "0.0.0.0"
+listen_port = 8080
+
+[app]
+api_key = ""          # Set via MPT_API_KEY environment variable in RunPod
+hide_config = false
+edge_tts_timeout = 30
+voice_name = "gemini:Zephyr"
+tls_verify = true
+video_source = "pexels"
+pexels_api_keys = []   # Set PEXELS_API_KEYS in RunPod secrets
+pixabay_api_keys = []
+coverr_api_keys = []
+twelvelabs_api_keys = []
+twelvelabs_rerank_terms = false
+match_materials_to_script = false
+sonilo_api_key = ""
+sonilo_base_url = "https://api.sonilo.com"
+sonilo_timeout = 600
+llm_provider = "gemini"
+moonshot_api_key = ""
+moonshot_base_url = ""
+moonshot_model_name = ""
+openai_api_key = ""
+openai_base_url = "https://openrouter.ai/api/v1"
+openai_model_name = ""
+gemini_api_key = ""   # Set GEMINI_API_KEY in RunPod secrets
+gemini_model_name = "gemini-2.5-flash"
+deepseek_api_key = ""
+deepseek_base_url = ""
+deepseek_model_name = ""
+qwen_api_key = ""
+qwen_model_name = ""
+azure_api_key = ""
+azure_base_url = ""
+azure_api_version = "2024-02-15-preview"
+volcengine_api_key = ""
+volcengine_base_url = ""
+volcengine_model_name = ""
+grok_api_key = ""
+grok_base_url = ""
+grok_model_name = ""
+minimax_api_key = ""
+minimax_base_url = ""
+minimax_model_name = ""
+mimo_api_key = ""
+mimo_base_url = ""
+mimo_model_name = ""
+cloudflare_api_key = ""
+cloudflare_account_id = ""
+cloudflare_gateway_id = ""
+cloudflare_model_name = ""
+modelscope_api_key = ""
+modelscope_base_url = ""
+modelscope_model_name = ""
+aihubmix_api_key = ""
+aihubmix_base_url = ""
+aihubmix_model_name = ""
+aimlapi_api_key = ""
+aimlapi_base_url = ""
+aimlapi_model_name = ""
+evolink_api_key = ""
+evolink_base_url = ""
+evolink_model_name = ""
+ollama_base_url = ""
+ollama_model_name = ""
+oneapi_api_key = ""
+oneapi_base_url = ""
+oneapi_model_name = ""
+litellm_model_name = ""
+groq_api_key = ""
+groq_base_url = ""
+groq_model_name = ""
+pollinations_api_key = ""
+pollinations_base_url = ""
+pollinations_model_name = ""
+mimo_tts_model_name = "mimo-v2.5-tts"
+mimo_tts_style_prompt = "请用自然、清晰、适合短视频旁白的语气朗读。"
+subtitle_provider = "edge"
+endpoint = ""          # Set to your RunPod endpoint in RunPod env vars
+material_directory = ""
+# KEY: disable Redis so it falls back to InMemoryTaskManager
+enable_redis = false
+max_concurrent_tasks = 5
+max_queued_tasks = 100
+upload_post_enabled = false
+upload_post_api_key = ""
+upload_post_username = ""
+upload_post_platforms = ["tiktok", "instagram"]
+upload_post_auto_upload = false
+upload_post_youtube_privacy_status = "public"
+upload_post_max_pending_tasks = 10
+
+[whisper]
+model_size = "large-v3"
+device = "cpu"
+compute_type = "int8"
+
+[proxy]
+
+[azure]
+speech_key = ""
+speech_region = ""
+
+[siliconflow]
+api_key = ""
+
+[elevenlabs]
+api_key = ""
+model_id = "eleven_multilingual_v2"
+
+[chatterbox]
+base_url = "http://127.0.0.1:4123/v1"
+api_key = ""
+model_id = "chatterbox"
+voices = ["default-Female"]
+
+[ui]
+hide_log = false
+voice_mode = "tts"
+tts_server = "azure-tts-v1"
+voice_name = "gemini:Zephyr"
+font_name = "MicrosoftYaHeiBold.ttc"
+subtitle_position = "bottom"
+text_fore_color = "#FFFFFF"
+font_size = 60
+subtitle_background_enabled = false
+subtitle_background_color = "#000000"
